@@ -63,28 +63,33 @@ class _OutputView extends StatelessWidget {
                 ),
               ),
             ),
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                child: Column(
-                  key: ValueKey('${state.mode}_${state.status}'),
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    ModeToggle(
-                      mode: state.mode,
-                      onToggle: () => context.read<OutputCubit>().toggleMode(),
+            body: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: Column(
+                      key: ValueKey('${state.mode}_${state.status}'),
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ModeToggle(
+                          mode: state.mode,
+                          onToggle: () => context.read<OutputCubit>().toggleMode(),
+                        ),
+                        const SizedBox(height: 24),
+                        if (state.mode == OutputMode.local)
+                          PromptPreviewCard(prompt: state.prompt)
+                        else
+                          SummaryCard(
+                            summary: state.aiSummary,
+                            isLoading: state.status == OutputStatus.loading,
+                            error: state.status == OutputStatus.error ? state.errorMessage : null,
+                          ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    if (state.mode == OutputMode.local)
-                      PromptPreviewCard(prompt: state.prompt)
-                    else
-                      SummaryCard(
-                        summary: state.aiSummary,
-                        isLoading: state.status == OutputStatus.loading,
-                        error: state.status == OutputStatus.error ? state.errorMessage : null,
-                      ),
-                  ],
+                  ),
                 ),
               ),
             ),

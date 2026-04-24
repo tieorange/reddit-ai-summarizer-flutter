@@ -64,25 +64,58 @@ class _InputViewState extends State<_InputView> {
               if (state.status == InputStatus.loading) {
                 return const _LoadingSkeleton();
               }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 24),
-                  UrlInputField(
-                    controller: _controller,
-                    onSubmitted: () => context.read<InputCubit>().submit(),
-                    errorText: state.status == InputStatus.error ? state.errorMessage : null,
+              return Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 600),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 40),
+                      const Icon(
+                        Icons.auto_awesome_rounded,
+                        size: 64,
+                        color: Color(0xFFFF4500),
+                      ),
+                      const SizedBox(height: 24),
+                      Text(
+                        'Reddit AI Summarizer',
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Turn long threads into concise, actionable summaries in seconds.',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 40),
+                      UrlInputField(
+                        controller: _controller,
+                        onSubmitted: () => context.read<InputCubit>().submit(),
+                        errorText: state.status == InputStatus.error ? state.errorMessage : null,
+                      ),
+                      const SizedBox(height: 24),
+                      SizedBox(
+                        height: 56,
+                        child: FilledButton.icon(
+                          onPressed: () {
+                            context.read<InputCubit>().updateUrl(_controller.text);
+                            context.read<InputCubit>().submit();
+                          },
+                          style: FilledButton.styleFrom(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          ),
+                          icon: const Icon(Icons.summarize_rounded),
+                          label: const Text('Fetch & Summarize', style: TextStyle(fontSize: 16)),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  FilledButton.icon(
-                    onPressed: () {
-                      context.read<InputCubit>().updateUrl(_controller.text);
-                      context.read<InputCubit>().submit();
-                    },
-                    icon: const Icon(Icons.summarize),
-                    label: const Text('Fetch & Summarize'),
-                  ),
-                ],
+                ),
               );
             },
           ),

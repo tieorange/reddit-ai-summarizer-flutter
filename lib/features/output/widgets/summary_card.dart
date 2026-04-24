@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../../core/theme/markdown_theme.dart';
 
 class SummaryCard extends StatelessWidget {
   const SummaryCard({super.key, required this.summary, this.isLoading = false, this.error});
@@ -55,8 +57,8 @@ class SummaryCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('AI Summary', style: Theme.of(context).textTheme.titleMedium),
-                IconButton(
-                  icon: const Icon(Icons.copy),
+                IconButton.filledTonal(
+                  icon: const Icon(Icons.copy_rounded, size: 20),
                   tooltip: 'Copy summary',
                   onPressed: () async {
                     await Clipboard.setData(ClipboardData(text: summary!));
@@ -70,8 +72,12 @@ class SummaryCard extends StatelessWidget {
                 ),
               ],
             ),
-            const Divider(),
-            SelectableText(summary!, style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(height: 12),
+            MarkdownBody(
+              data: summary!,
+              selectable: true,
+              styleSheet: MarkdownTheme.sheet(context),
+            ),
           ],
         ),
       ),

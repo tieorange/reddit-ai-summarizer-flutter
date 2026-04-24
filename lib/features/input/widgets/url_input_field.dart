@@ -22,12 +22,13 @@ class UrlInputField extends StatelessWidget {
         hintText: 'https://www.reddit.com/r/...',
         labelText: 'Reddit Post URL',
         errorText: errorText,
-        prefixIcon: const Icon(Icons.link),
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.clear),
-          onPressed: () => controller.clear(),
-        ),
-        border: const OutlineInputBorder(),
+        prefixIcon: const Icon(Icons.link_rounded),
+        suffixIcon: controller.text.isNotEmpty
+            ? IconButton(
+                icon: const Icon(Icons.clear_rounded),
+                onPressed: () => controller.clear(),
+              )
+            : null,
       ),
       onSubmitted: (_) => onSubmitted(),
     );
