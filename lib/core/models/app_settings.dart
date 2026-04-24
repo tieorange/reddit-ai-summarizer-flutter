@@ -14,7 +14,7 @@ class AppSettings extends Equatable {
   static const defaults = AppSettings(
     model: 'Meta-Llama-3.3-70B-Instruct',
     baseUrl: 'https://api.sambanova.ai/v1',
-    apiKey: 'your-api-key-here',
+    apiKey: String.fromEnvironment('AI_API_KEY', defaultValue: 'your-api-key-here'),
   );
 
   AppSettings copyWith({String? model, String? baseUrl, String? apiKey}) => AppSettings(

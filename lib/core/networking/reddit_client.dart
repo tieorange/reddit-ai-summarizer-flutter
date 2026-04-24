@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import '../errors/failures.dart';
 import '../models/comment.dart';
@@ -9,15 +10,20 @@ class RedditClient {
       : _dio = Dio(BaseOptions(
           connectTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 15),
-          headers: {'User-Agent': 'RedditSummarizer/1.0'},
+          headers: kIsWeb ? {} : {'User-Agent': 'RedditSummarizer/1.0'},
         ));
 
   final Dio _dio;
 
   Future<Either<Failure, PostData>> fetchPost(String subreddit, String postId) async {
     try {
-      final url =
+      var url =
           'https://www.reddit.com/r/$subreddit/comments/$postId.json?sort=best&limit=500&raw_json=1';
+
+      if (kIsWeb) {
+        url = 'https://corsproxy.io/?${Uri.encodeComponent(url)}';
+      }
+
       final response = await _dio.get<List<dynamic>>(url);
       final data = response.data;
       if (data == null || data.length < 2) return const Left(ParseFailure());

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import '../errors/failures.dart';
 import '../models/app_settings.dart';
@@ -10,8 +11,12 @@ class AiClient {
 
   Future<Either<Failure, String>> summarize(String prompt, AppSettings settings) async {
     try {
+      var url = '${settings.baseUrl}/chat/completions';
+      if (kIsWeb) {
+        url = 'https://corsproxy.io/?${Uri.encodeComponent(url)}';
+      }
       final response = await _dio.post<Map<String, dynamic>>(
-        '${settings.baseUrl}/chat/completions',
+        url,
         options: Options(
           headers: {
             'Authorization': 'Bearer ${settings.apiKey}',
