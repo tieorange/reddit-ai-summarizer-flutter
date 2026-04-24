@@ -54,7 +54,17 @@ class _ScaffoldWithNav extends StatelessWidget {
             : 0;
     return Scaffold(
       body: child,
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 4),
+            child: Text(
+              'Made with ❤️ by TieOrange',
+              style: TextStyle(fontSize: 11, color: Colors.grey),
+            ),
+          ),
+          NavigationBar(
         selectedIndex: index,
         onDestinationSelected: (i) {
           switch (i) {
@@ -70,6 +80,8 @@ class _ScaffoldWithNav extends StatelessWidget {
           NavigationDestination(icon: Icon(Icons.link), label: 'Input'),
           NavigationDestination(icon: Icon(Icons.history), label: 'History'),
           NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
+        ],
+      ),
         ],
       ),
     );

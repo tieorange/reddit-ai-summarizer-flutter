@@ -18,6 +18,13 @@ class UrlInputField extends StatelessWidget {
       controller: controller,
       keyboardType: TextInputType.url,
       autocorrect: false,
+      enableInteractiveSelection: true,
+      contextMenuBuilder: (context, editableTextState) {
+        return AdaptiveTextSelectionToolbar.buttonItems(
+          anchors: editableTextState.contextMenuAnchors,
+          buttonItems: editableTextState.contextMenuButtonItems,
+        );
+      },
       decoration: InputDecoration(
         hintText: 'https://www.reddit.com/r/...',
         labelText: 'Reddit Post URL',

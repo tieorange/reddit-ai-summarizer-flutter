@@ -21,7 +21,8 @@ class RedditClient {
           'https://www.reddit.com/r/$subreddit/comments/$postId.json?sort=best&limit=500&raw_json=1';
 
       if (kIsWeb) {
-        url = 'https://corsproxy.io/?${Uri.encodeComponent(url)}';
+        final path = '/r/$subreddit/comments/$postId.json?sort=best&limit=500&raw_json=1';
+        url = 'https://reddit-proxy.tieorange.workers.dev/reddit?path=${Uri.encodeComponent(path)}';
       }
 
       final response = await _dio.get<List<dynamic>>(url);

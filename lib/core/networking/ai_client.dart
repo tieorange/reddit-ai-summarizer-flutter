@@ -13,7 +13,7 @@ class AiClient {
     try {
       var url = '${settings.baseUrl}/chat/completions';
       if (kIsWeb) {
-        url = 'https://corsproxy.io/?${Uri.encodeComponent(url)}';
+        url = 'https://reddit-proxy.tieorange.workers.dev/ai';
       }
       final response = await _dio.post<Map<String, dynamic>>(
         url,
